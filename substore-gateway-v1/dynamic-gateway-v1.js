@@ -348,15 +348,15 @@ async function operator(input, targetPlatform, context) {
       var group = groups[g];
       if (!group || skipGroups[group.name] || !Array.isArray(group.proxies) || group.proxies.indexOf(manualGroup) < 0) continue;
       var shouldExpandFrontProxies = group['front-proxies'] === true || group['front-proxies'] === 'true';
-      var hasNativeLanding = includeNativeLanding || group.proxies.indexOf(nativeLandingGroup) >= 0;
+      var hasExplicitNativeLanding = group.proxies.indexOf(nativeLandingGroup) >= 0;
+      var shouldInsertNativeLanding = includeNativeLanding && !hasExplicitNativeLanding;
       var proxies = [];
       for (var i = 0; i < group.proxies.length; i++) {
         var proxyName = group.proxies[i];
         if (shouldExpandFrontProxies && frontProxyNames.indexOf(proxyName) >= 0) continue;
-        if (hasNativeLanding && proxyName === nativeLandingGroup) continue;
         pushUnique(proxies, proxyName);
         if (proxyName === manualGroup) {
-          if (hasNativeLanding) pushUnique(proxies, nativeLandingGroup);
+          if (shouldInsertNativeLanding) pushUnique(proxies, nativeLandingGroup);
           if (shouldExpandFrontProxies) {
             for (var p = 0; p < frontProxyNames.length; p++) pushUnique(proxies, frontProxyNames[p]);
           }
