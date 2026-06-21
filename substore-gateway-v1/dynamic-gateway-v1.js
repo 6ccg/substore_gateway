@@ -347,19 +347,23 @@ async function operator(input, targetPlatform, context) {
     for (var g = 0; g < groups.length; g++) {
       var group = groups[g];
       if (!group || skipGroups[group.name] || !Array.isArray(group.proxies) || group.proxies.indexOf(manualGroup) < 0) continue;
+      var shouldExpandFrontProxies = group['front-proxies'] === true || group['front-proxies'] === 'true';
       var hasNativeLanding = includeNativeLanding || group.proxies.indexOf(nativeLandingGroup) >= 0;
       var proxies = [];
       for (var i = 0; i < group.proxies.length; i++) {
         var proxyName = group.proxies[i];
-        if (frontProxyNames.indexOf(proxyName) >= 0) continue;
+        if (shouldExpandFrontProxies && frontProxyNames.indexOf(proxyName) >= 0) continue;
         if (hasNativeLanding && proxyName === nativeLandingGroup) continue;
         pushUnique(proxies, proxyName);
         if (proxyName === manualGroup) {
           if (hasNativeLanding) pushUnique(proxies, nativeLandingGroup);
-          for (var p = 0; p < frontProxyNames.length; p++) pushUnique(proxies, frontProxyNames[p]);
+          if (shouldExpandFrontProxies) {
+            for (var p = 0; p < frontProxyNames.length; p++) pushUnique(proxies, frontProxyNames[p]);
+          }
         }
       }
       group.proxies = proxies;
+      delete group['front-proxies'];
       delete group['include-all'];
       delete group.filter;
       delete group.excludeFilter;

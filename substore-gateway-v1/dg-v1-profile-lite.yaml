@@ -102,30 +102,35 @@ proxy-groups:
     icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Available.png
   - name: 💬 AI专用
     type: select
+    front-proxies: true
     proxies:
       - 🚀 节点选择
       - ✈️ 手动选择
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
   - name: 𝕏 推特服务
     type: select
+    front-proxies: true
     proxies:
       - 🚀 节点选择
       - ✈️ 手动选择
     icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Twitter.png
   - name: 📱 Telegram服务
     type: select
+    front-proxies: true
     proxies:
       - 🚀 节点选择
       - ✈️ 手动选择
     icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Telegram.png
   - name: 🇬 Google服务
     type: select
+    front-proxies: true
     proxies:
       - 🚀 节点选择
       - ✈️ 手动选择
     icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google_Search.png
   - name: 🍎 苹果中国
     type: select
+    front-proxies: true
     proxies:
       - DIRECT
       - 🚀 节点选择
@@ -133,12 +138,14 @@ proxy-groups:
     icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Apple_1.png
   - name: 🍏 苹果服务
     type: select
+    front-proxies: true
     proxies:
       - 🚀 节点选择
       - ✈️ 手动选择
     icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Apple_2.png
   - name: 🎮 游戏平台
     type: select
+    front-proxies: true
     proxies:
       - DIRECT
       - 🚀 节点选择
