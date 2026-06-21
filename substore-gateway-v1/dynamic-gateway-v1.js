@@ -347,12 +347,15 @@ async function operator(input, targetPlatform, context) {
     for (var g = 0; g < groups.length; g++) {
       var group = groups[g];
       if (!group || skipGroups[group.name] || !Array.isArray(group.proxies) || group.proxies.indexOf(manualGroup) < 0) continue;
+      var hasNativeLanding = group.proxies.indexOf(nativeLandingGroup) >= 0;
       var proxies = [];
       for (var i = 0; i < group.proxies.length; i++) {
         var proxyName = group.proxies[i];
         if (frontProxyNames.indexOf(proxyName) >= 0) continue;
+        if (hasNativeLanding && proxyName === nativeLandingGroup) continue;
         pushUnique(proxies, proxyName);
         if (proxyName === manualGroup) {
+          if (hasNativeLanding) pushUnique(proxies, nativeLandingGroup);
           for (var p = 0; p < frontProxyNames.length; p++) pushUnique(proxies, frontProxyNames[p]);
         }
       }
