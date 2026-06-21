@@ -142,6 +142,7 @@ proxy-groups:
     proxies:
       - 🚀 节点选择
       - ✈️ 手动选择
+      - DIRECT
     icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Apple_2.png
   - name: 🎮 游戏平台
     type: select

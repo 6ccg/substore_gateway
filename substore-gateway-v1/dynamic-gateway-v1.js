@@ -357,10 +357,10 @@ async function operator(input, targetPlatform, context) {
         pushUnique(proxies, proxyName);
         if (proxyName === manualGroup) {
           if (shouldInsertNativeLanding) pushUnique(proxies, nativeLandingGroup);
-          if (shouldExpandFrontProxies) {
-            for (var p = 0; p < frontProxyNames.length; p++) pushUnique(proxies, frontProxyNames[p]);
-          }
         }
+      }
+      if (shouldExpandFrontProxies) {
+        for (var p = 0; p < frontProxyNames.length; p++) pushUnique(proxies, frontProxyNames[p]);
       }
       group.proxies = proxies;
       delete group['front-proxies'];
