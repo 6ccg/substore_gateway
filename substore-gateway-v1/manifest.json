@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "gateway": {
+    "name": "dynamic-gateway-v1",
+    "displayName": "Dynamic Gateway v1",
+    "script": "dynamic-gateway-v1.js"
+  },
+  "files": [
+    {
+      "name": "dg-v1-profile-lite",
+      "displayName": "DG v1 Base Rule",
+      "path": "dg-v1-profile-lite.yaml",
+      "remark": "唯一基础规则；其他能力全部用补丁叠加。"
+    },
+    {
+      "name": "dg-v1-patch-adblock",
+      "displayName": "DG v1 Patch Adblock",
+      "path": "dg-v1-patch-adblock.yaml",
+      "remark": "广告拦截补丁，从旧完整 rule 模板拆出 reject/sogouinput 规则。"
+    },
+    {
+      "name": "dg-v1-patch-audit",
+      "displayName": "DG v1 Patch Audit",
+      "path": "dg-v1-patch-audit.yaml",
+      "remark": "Anti/CN 审计补丁，来自旧 all-rule 模板，规则固定插在 Lan 后面；CN 审计默认直连。"
+    },
+    {
+      "name": "dg-v1-patch-landing",
+      "displayName": "DG v1 Patch Landing",
+      "path": "dg-v1-patch-landing.yaml",
+      "remark": "落地补丁，只提供落地前置分组；具体落地源由 landingSources 选择。"
+    }
+  ],
+  "obsoleteFiles": [
+    "dg-v1-profile-rule",
+    "dg-v1-profile-landing",
+    "dg-v1-profile-ali",
+    "dg-v1-patch-ali",
+    "dg-v1-patch-warp"
+  ]
+}

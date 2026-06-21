@@ -1,0 +1,9 @@
+proxyGroups:
+  - name: 🪜 落地前置
+    type: select
+    include-all: true
+    proxies:
+      - ✈️ 手动选择
+      - 🚀 节点选择
+      - DIRECT
+    icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Proxy.png

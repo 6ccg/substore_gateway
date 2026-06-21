@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sub-Store 动态网关管理器 v1</title>
+  <link rel="stylesheet" href="./substore-gateway-v1/substore-gateway-manager-v1.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="topbar">
+        <div class="brand">
+          <h1>Sub-Store 动态网关管理器 v1</h1>
+          <div class="subtitle">通过纵向引导，轻松生成完整 mihomo 网关订阅</div>
+        </div>
+        <div class="topbar-actions">
+          <span id="gatewayState" class="pill">未连接</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="wizard-container">
+        
+        <!-- Step 1: 后端连接 -->
+        <div class="step-card active" id="step1Card">
+          <div class="step-header" id="step1Header">
+            <div class="step-header-left">
+              <span class="step-badge" id="step1Badge">1</span>
+              <span class="step-title">连接 Sub-Store 后端</span>
+            </div>
+            <span class="step-summary" id="step1Summary">未连接</span>
+          </div>
+          <div class="step-body">
+            <div class="stack">
+              <label class="field">
+                Sub-Store API 地址
+                <input id="apiBase" type="url" spellcheck="false" placeholder="手动填写，例如：https://你的域名">
+              </label>
+              <label class="field">
+                网关文件名
+                <input id="gatewayName" type="text" value="dynamic-gateway-v1" spellcheck="false">
+              </label>
+              <div id="statusBox" class="status warn">先填写 Sub-Store API 地址，再连接后端。页面不会自动绑定、推导或缓存任何后端。</div>
+              <div class="step-actions">
+                <button id="connectBtn" class="primary">连接后端</button>
+                <button id="installBtn">部署网关脚本</button>
+                <button id="deleteBtn" class="danger">清除网关脚本</button>
+                <button id="toStep2Btn" class="primary">下一步</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: 节点选择 -->
+        <div class="step-card disabled" id="step2Card">
+          <div class="step-header" id="step2Header">
+            <div class="step-header-left">
+              <span class="step-badge" id="step2Badge">2</span>
+              <span class="step-title">节点与落地源选择</span>
+            </div>
+            <span class="step-summary" id="step2Summary">未选择</span>
+          </div>
+          <div class="step-body">
+            <div class="stack">
+              <div class="selection-grid">
+                <div class="field-group">
+                  <label class="field">常规节点源</label>
+                  <div class="search-wrapper">
+                    <input type="text" id="sourceSearch" placeholder="搜索节点源..." class="search-input" spellcheck="false">
+                  </div>
+                  <div id="sourceCheckboxList" class="custom-checkbox-list"></div>
+                  <select id="sourceSelect" multiple style="display: none;"></select>
+                </div>
+                
+                <div class="field-group">
+                  <label class="field">落地节点源（可选）</label>
+                  <div class="search-wrapper">
+                    <input type="text" id="landingSourceSearch" placeholder="搜索落地源..." class="search-input" spellcheck="false">
+                  </div>
+                  <div id="landingSourceCheckboxList" class="custom-checkbox-list"></div>
+                  <select id="landingSourceSelect" multiple style="display: none;"></select>
+                </div>
+              </div>
+
+              <div class="row">
+                <button id="selectAllBtn" class="ghost">全选常规源</button>
+                <button id="clearAllBtn" class="ghost">清除选择</button>
+              </div>
+
+              <div class="selected-overview">
+                <div class="selected-overview-block">
+                  <div class="selected-overview-title">已选常规源</div>
+                  <div id="selectedSourceNames" class="selected-name-list">
+                    <span class="selected-empty">未选择</span>
+                  </div>
+                </div>
+                <div class="selected-overview-block">
+                  <div class="selected-overview-title">已选落地源</div>
+                  <div id="selectedLandingSourceNames" class="selected-name-list">
+                    <span class="selected-empty">未选择</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="step-actions">
+                <button id="toStep3Btn" class="primary">下一步</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: 附加规则选项 -->
+        <div class="step-card disabled" id="step3Card">
+          <div class="step-header" id="step3Header">
+            <div class="step-header-left">
+              <span class="step-badge" id="step3Badge">3</span>
+              <span class="step-title">附加规则与前缀配置</span>
+            </div>
+            <span class="step-summary" id="step3Summary">默认</span>
+          </div>
+          <div class="step-body">
+            <div class="stack">
+              <label class="field">
+                广告拦截
+                <select id="adblockMode">
+                  <option value="no">关闭</option>
+                  <option value="yes">开启</option>
+                </select>
+              </label>
+              <label class="field">
+                Anti/CN 审计
+                <select id="auditMode">
+                  <option value="no">关闭</option>
+                  <option value="yes">开启</option>
+                </select>
+              </label>
+              <label class="field">
+                输出名称前缀
+                <input id="namePrefix" type="text" value="mihomo" spellcheck="false">
+              </label>
+              <label class="field">
+                查询流量信息订阅链接
+                <select id="flowSubSelect"></select>
+              </label>
+              <label class="field">
+                查询流量信息 User-Agent
+                <input id="flowUserAgent" type="text" spellcheck="false">
+              </label>
+              <div class="step-actions">
+                <button id="toStep4Btn" class="primary">下一步</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: 生成订阅 -->
+        <div class="step-card disabled" id="step4Card">
+          <div class="step-header" id="step4Header">
+            <div class="step-header-left">
+              <span class="step-badge" id="step4Badge">4</span>
+              <span class="step-title">生成订阅</span>
+            </div>
+            <span class="step-summary" id="step4Summary">未生成</span>
+          </div>
+          <div class="step-body">
+            <div class="stack">
+              <div class="status info">提示：要使网关链接生效，您的 Sub-Store 后端必须已部署最新版网关依赖文件。</div>
+
+              <div class="row">
+                <button id="generateLinkBtn" class="primary" style="width: 100%;">生成订阅链接</button>
+              </div>
+
+              <div class="link-list-wrapper">
+                <label class="field" style="margin-bottom: 8px;">订阅链接生成结果</label>
+                <div id="linkList" class="link-list">
+                  <div class="empty">点击上方“生成订阅链接”进行输出。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="log-panel outer-log-panel">
+          <div class="row" style="justify-content: space-between;">
+            <label class="field">运行日志</label>
+            <button id="clearLogBtn" class="ghost" style="min-height: 28px; padding: 0 10px;">清除</button>
+          </div>
+          <div id="log" class="log"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="./substore-gateway-v1/substore-gateway-manager-v1.js"></script>
+</body>
+</html>

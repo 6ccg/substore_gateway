@@ -1,0 +1,33 @@
+proxyGroups:
+  - name: 🛡️ 绕过审计
+    type: select
+    proxies:
+      - 🛬 原生落地
+      - 🚀 节点选择
+      - REJECT
+      - DIRECT
+    icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bypass.png
+  - name: 🔍 CN审计
+    type: select
+    proxies:
+      - DIRECT
+      - 🪜 落地前置
+    icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Filter.png
+
+ruleProviders:
+  Anti-Audit:
+    type: http
+    behavior: classical
+    url: https://gist.githubusercontent.com/6ccg/44809ce2b3ba6c569f682e0308758063/raw/Anti-Audit.yaml
+    path: ./ruleset/Anti-Audit.yaml
+  Anti-Audit-CN:
+    type: http
+    behavior: classical
+    url: https://gist.githubusercontent.com/6ccg/44809ce2b3ba6c569f682e0308758063/raw/Anti-Audit-CN.yaml
+    path: ./ruleset/Anti-Audit-CN.yaml
+
+insertRulesAfter:
+  pattern: '^RULE-SET,Lan,'
+  rules:
+    - RULE-SET,Anti-Audit,🛡️ 绕过审计
+    - RULE-SET,Anti-Audit-CN,🔍 CN审计
