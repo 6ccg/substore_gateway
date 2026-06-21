@@ -2,17 +2,18 @@ proxyGroups:
   - name: 🛡️ 绕过审计
     type: select
     proxies:
-      - 🛬 原生落地
       - 🚀 节点选择
-      - REJECT
+      - ✈️ 手动选择
       - DIRECT
+      - REJECT
     icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bypass.png
   - name: 🔍 CN审计
     type: select
     proxies:
-      - DIRECT
       - 🚀 节点选择
       - ✈️ 手动选择
+      - DIRECT
+      - REJECT
     icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Filter.png
 
 ruleProviders:
