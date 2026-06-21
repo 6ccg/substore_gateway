@@ -337,10 +337,8 @@ async function operator(input, targetPlatform, context) {
     else group.proxies.push(proxyName);
   }
 
-  function configureLandingAwareGroups(yamlObj) {
+  function configureAppGroups(yamlObj, frontProxyNames, includeNativeLanding) {
     var groups = ensureArray(yamlObj, 'proxy-groups');
-    var rocket = groups[indexOfName(groups, '\uD83D\uDE80 \u8282\u70B9\u9009\u62E9')];
-    addGroupProxy(rocket, nativeLandingGroup, 1);
     function setExplicitGroupProxies(groupName, proxies) {
       var group = groups[indexOfName(groups, groupName)];
       if (!group) return;
@@ -349,6 +347,9 @@ async function operator(input, targetPlatform, context) {
       delete group.filter;
       delete group.excludeFilter;
     }
+    var commonProxies = ['\uD83D\uDE80 \u8282\u70B9\u9009\u62E9', manualGroup];
+    for (var p = 0; p < frontProxyNames.length; p++) pushUnique(commonProxies, frontProxyNames[p]);
+    if (includeNativeLanding) pushUnique(commonProxies, nativeLandingGroup);
     var appProxyGroups = [
       '\uD83D\uDCAC AI\u4E13\u7528',
       '\uD835\uDD4F \u63A8\u7279\u670D\u52A1',
@@ -357,15 +358,22 @@ async function operator(input, targetPlatform, context) {
       '\uD83C\uDF4F \u82F9\u679C\u670D\u52A1'
     ];
     for (var i = 0; i < appProxyGroups.length; i++) {
-      setExplicitGroupProxies(appProxyGroups[i], ['\uD83D\uDE80 \u8282\u70B9\u9009\u62E9', manualGroup, nativeLandingGroup]);
+      setExplicitGroupProxies(appProxyGroups[i], commonProxies);
     }
     var directFirstGroups = [
       '\uD83C\uDF4E \u82F9\u679C\u4E2D\u56FD',
       '\uD83C\uDFAE \u6E38\u620F\u5E73\u53F0'
     ];
     for (var d = 0; d < directFirstGroups.length; d++) {
-      setExplicitGroupProxies(directFirstGroups[d], ['DIRECT', '\uD83D\uDE80 \u8282\u70B9\u9009\u62E9', manualGroup, nativeLandingGroup]);
+      setExplicitGroupProxies(directFirstGroups[d], ['DIRECT'].concat(commonProxies));
     }
+  }
+
+  function configureLandingAwareGroups(yamlObj, frontProxyNames) {
+    var groups = ensureArray(yamlObj, 'proxy-groups');
+    var rocket = groups[indexOfName(groups, '\uD83D\uDE80 \u8282\u70B9\u9009\u62E9')];
+    addGroupProxy(rocket, nativeLandingGroup, 1);
+    configureAppGroups(yamlObj, frontProxyNames, true);
   }
 
   var patchNames = splitList(query.patches);
@@ -412,7 +420,9 @@ async function operator(input, targetPlatform, context) {
   if (patchNames.indexOf('landing') >= 0) {
     configureLandingFrontGroup(yamlObj, frontProxyNames);
     configureNativeLandingGroup(yamlObj, landingProxyNames);
-    configureLandingAwareGroups(yamlObj);
+    configureLandingAwareGroups(yamlObj, frontProxyNames);
+  } else {
+    configureAppGroups(yamlObj, frontProxyNames, false);
   }
   yamlObj.proxies = allProxies.concat(yamlObj.proxies);
   var out = ProxyUtils.yaml.dump(yamlObj);
