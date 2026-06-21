@@ -128,6 +128,7 @@ proxy-groups:
     include-all: true
     type: select
     proxies:
+      - DIRECT
       - 🚀 节点选择
     icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Apple_1.png
   - name: 🍏 苹果服务
@@ -140,6 +141,7 @@ proxy-groups:
     include-all: true
     type: select
     proxies:
+      - DIRECT
       - 🚀 节点选择
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png
 rule-providers:
