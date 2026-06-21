@@ -341,18 +341,30 @@ async function operator(input, targetPlatform, context) {
     var groups = ensureArray(yamlObj, 'proxy-groups');
     var rocket = groups[indexOfName(groups, '\uD83D\uDE80 \u8282\u70B9\u9009\u62E9')];
     addGroupProxy(rocket, nativeLandingGroup, 1);
+    function setExplicitGroupProxies(groupName, proxies) {
+      var group = groups[indexOfName(groups, groupName)];
+      if (!group) return;
+      group.proxies = proxies.slice();
+      delete group['include-all'];
+      delete group.filter;
+      delete group.excludeFilter;
+    }
     var appProxyGroups = [
       '\uD83D\uDCAC AI\u4E13\u7528',
       '\uD835\uDD4F \u63A8\u7279\u670D\u52A1',
       '\uD83D\uDCF1 Telegram\u670D\u52A1',
       '\uD83C\uDDEC Google\u670D\u52A1',
-      '\uD83C\uDF4E \u82F9\u679C\u4E2D\u56FD',
-      '\uD83C\uDF4F \u82F9\u679C\u670D\u52A1',
-      '\uD83C\uDFAE \u6E38\u620F\u5E73\u53F0'
+      '\uD83C\uDF4F \u82F9\u679C\u670D\u52A1'
     ];
     for (var i = 0; i < appProxyGroups.length; i++) {
-      var group = groups[indexOfName(groups, appProxyGroups[i])];
-      if (group) group.proxies = ['\uD83D\uDE80 \u8282\u70B9\u9009\u62E9', manualGroup, nativeLandingGroup];
+      setExplicitGroupProxies(appProxyGroups[i], ['\uD83D\uDE80 \u8282\u70B9\u9009\u62E9', manualGroup, nativeLandingGroup]);
+    }
+    var directFirstGroups = [
+      '\uD83C\uDF4E \u82F9\u679C\u4E2D\u56FD',
+      '\uD83C\uDFAE \u6E38\u620F\u5E73\u53F0'
+    ];
+    for (var d = 0; d < directFirstGroups.length; d++) {
+      setExplicitGroupProxies(directFirstGroups[d], ['DIRECT', '\uD83D\uDE80 \u8282\u70B9\u9009\u62E9', manualGroup, nativeLandingGroup]);
     }
   }
 
