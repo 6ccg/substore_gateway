@@ -2,9 +2,9 @@ proxyGroups:
   - name: 🛑 广告拦截
     type: select
     proxies:
-      - REJECT
       - DIRECT
       - 🚀 节点选择
+      - ✈️ 手动选择
 
 ruleProviders:
   reject_non_ip:

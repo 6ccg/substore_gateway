@@ -337,7 +337,7 @@ async function operator(input, targetPlatform, context) {
     else group.proxies.push(proxyName);
   }
 
-  function expandFrontProxyGroups(yamlObj, frontProxyNames) {
+  function expandFrontProxyGroups(yamlObj, frontProxyNames, includeNativeLanding) {
     var groups = ensureArray(yamlObj, 'proxy-groups');
     var skipGroups = {};
     skipGroups[manualGroup] = true;
@@ -347,7 +347,7 @@ async function operator(input, targetPlatform, context) {
     for (var g = 0; g < groups.length; g++) {
       var group = groups[g];
       if (!group || skipGroups[group.name] || !Array.isArray(group.proxies) || group.proxies.indexOf(manualGroup) < 0) continue;
-      var hasNativeLanding = group.proxies.indexOf(nativeLandingGroup) >= 0;
+      var hasNativeLanding = includeNativeLanding || group.proxies.indexOf(nativeLandingGroup) >= 0;
       var proxies = [];
       for (var i = 0; i < group.proxies.length; i++) {
         var proxyName = group.proxies[i];
@@ -370,7 +370,7 @@ async function operator(input, targetPlatform, context) {
     var groups = ensureArray(yamlObj, 'proxy-groups');
     var rocket = groups[indexOfName(groups, '\uD83D\uDE80 \u8282\u70B9\u9009\u62E9')];
     addGroupProxy(rocket, nativeLandingGroup, 1);
-    expandFrontProxyGroups(yamlObj, frontProxyNames);
+    expandFrontProxyGroups(yamlObj, frontProxyNames, true);
   }
 
   var patchNames = splitList(query.patches);
@@ -419,7 +419,7 @@ async function operator(input, targetPlatform, context) {
     configureNativeLandingGroup(yamlObj, landingProxyNames);
     configureLandingAwareGroups(yamlObj, frontProxyNames);
   } else {
-    expandFrontProxyGroups(yamlObj, frontProxyNames);
+    expandFrontProxyGroups(yamlObj, frontProxyNames, false);
   }
   yamlObj.proxies = allProxies.concat(yamlObj.proxies);
   var out = ProxyUtils.yaml.dump(yamlObj);

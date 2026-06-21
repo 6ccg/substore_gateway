@@ -11,7 +11,8 @@ proxyGroups:
     type: select
     proxies:
       - DIRECT
-      - 🪜 落地前置
+      - 🚀 节点选择
+      - ✈️ 手动选择
     icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Filter.png
 
 ruleProviders:
